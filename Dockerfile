@@ -1,6 +1,16 @@
-FROM ruby:3.0.0-alpine
+FROM --platform=linux/amd64 node:16
 
-WORKDIR /usr/src/app
-COPY . /usr/src/app
+#create app directory
+WORKDIR /app
 
-CMD [ "ruby", "hello.rb" ]
+# install dependencies 
+# A Wildcard to make sure that we will copy both package.json and package-lock.json
+COPY package*.json /app/
+
+RUN npm install
+
+# Bundle app source
+COPY . . 
+
+EXPOSE 8080
+CMD ["npm", "start"]
